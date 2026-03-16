@@ -11,9 +11,9 @@ import MicOffIcon from '@mui/icons-material/MicOff'
 import ScreenShareIcon from '@mui/icons-material/ScreenShare';
 import StopScreenShareIcon from '@mui/icons-material/StopScreenShare'
 import ChatIcon from '@mui/icons-material/Chat'
-// import server from '../environment';
+import server from '../environment';
 
-const server_url = "https://zoomclone-backend-pzrh.onrender.com/";
+const server_url = server;
 
 var connections = {};
 
@@ -27,20 +27,35 @@ export default function VideoMeetComponent() {
 
     var socketRef = useRef();
     let socketIdRef = useRef();
+
     let localVideoref = useRef();
+
     let [videoAvailable, setVideoAvailable] = useState(true);
+
     let [audioAvailable, setAudioAvailable] = useState(true);
+
     let [video, setVideo] = useState([]);
+
     let [audio, setAudio] = useState();
+
     let [screen, setScreen] = useState();
+
     let [showModal, setModal] = useState(true);
+
     let [screenAvailable, setScreenAvailable] = useState();
+
     let [messages, setMessages] = useState([])
+
     let [message, setMessage] = useState("");
+
     let [newMessages, setNewMessages] = useState(3);
+
     let [askForUsername, setAskForUsername] = useState(true);
+
     let [username, setUsername] = useState("");
+
     const videoRef = useRef([])
+
     let [videos, setVideos] = useState([])
 
     // TODO
@@ -121,6 +136,9 @@ export default function VideoMeetComponent() {
         connectToSocketServer();
 
     }
+
+
+
 
     let getUserMediaSuccess = (stream) => {
         try {
@@ -363,56 +381,11 @@ export default function VideoMeetComponent() {
         let stream = canvas.captureStream()
         return Object.assign(stream.getVideoTracks()[0], { enabled: false })
     }
-let handleVideo = () => {
-    if (!window.localStream) return;
 
-    const videoTrack = window.localStream.getVideoTracks()[0];
-    if (!videoTrack) return;
-
-    if (videoTrack.enabled) {
-        // Turn OFF camera immediately
-        const blackTrack = black(); // your existing black() function
-
-        // Replace video track in local stream
-        window.localStream.removeTrack(videoTrack);
-        window.localStream.addTrack(blackTrack);
-
-        localVideoref.current.srcObject = window.localStream;
-
-        // Update all peer connections
-        for (let id in connections) {
-            const sender = connections[id].getSenders().find(
-                s => s.track && s.track.kind === 'video'
-            );
-            if (sender) sender.replaceTrack(blackTrack);
-        }
-
-        setVideo(false); // update icon immediately
-    } else {
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then((stream) => {
-                const realTrack = stream.getVideoTracks()[0];
-
-                const oldTrack = window.localStream.getVideoTracks()[0];
-                window.localStream.removeTrack(oldTrack);
-                window.localStream.addTrack(realTrack);
-
-                localVideoref.current.srcObject = window.localStream;
-
-                for (let id in connections) {
-                    const sender = connections[id].getSenders().find(
-                        s => s.track && s.track.kind === 'video'
-                    );
-                    if (sender) sender.replaceTrack(realTrack);
-                }
-
-                setVideo(true); 
-            })
-            .catch(e => console.log(e));
+    let handleVideo = () => {
+        setVideo(!video);
+        // getUserMedia();
     }
-};
-
-    
     let handleAudio = () => {
         setAudio(!audio)
         // getUserMedia();
@@ -431,8 +404,8 @@ let handleVideo = () => {
         try {
             let tracks = localVideoref.current.srcObject.getTracks()
             tracks.forEach(track => track.stop())
-        } catch (e) { console.log(e)}
-        window.location.href = "/home"
+        } catch (e) { }
+        window.location.href = "/"
     }
 
     let openChat = () => {
@@ -498,7 +471,7 @@ let handleVideo = () => {
                     {showModal ? <div className={styles.chatRoom}>
 
                         <div className={styles.chatContainer}>
-                            <h1 style={{color: "black"}}>Chat</h1>
+                            <h1>Chat</h1>
 
                             <div className={styles.chattingDisplay}>
 
@@ -507,11 +480,13 @@ let handleVideo = () => {
                                     console.log(messages)
                                     return (
                                         <div style={{ marginBottom: "20px" }} key={index}>
-                                            <p style={{ fontWeight: "bold", color: "black" }}>{item.sender}</p>
-                                            <p style={{color: "black"}}>{item.data}</p>
+                                            <p style={{ fontWeight: "bold" }}>{item.sender}</p>
+                                            <p>{item.data}</p>
                                         </div>
                                     )
                                 }) : <p>No Messages Yet</p>}
+
+
                             </div>
 
                             <div className={styles.chattingArea}>
