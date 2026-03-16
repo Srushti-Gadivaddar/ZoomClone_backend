@@ -2,11 +2,12 @@ import { Children, createContext, useContext, useState } from "react";
 import axios from "axios";
 import httpStatus from 'http-status';
 import { useNavigate } from "react-router-dom";
+// import environment from "../environment";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext();
 const client = axios.create({
-    baseURL: "http://localhost:3000/api/v1/users",
+    baseURL: `https://zoomclone-backend-pzrh.onrender.com/api/v1/users`,
     withCredentials: true,
 
 });
