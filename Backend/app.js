@@ -31,7 +31,8 @@ io.on("connection", (socket) => {
 import userRoutes from "./routes/user.js";
 
 app.use(cors({
-    origin: "*", 
+    origin: "https://videocall-9vmh.onrender.com", 
+    credentials: true
 }));
 app.use(express.json({ limit: "40kb"}));
 app.use(express.urlencoded({extended: true}));
