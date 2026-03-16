@@ -31,8 +31,7 @@ io.on("connection", (socket) => {
 import userRoutes from "./routes/user.js";
 
 app.use(cors({
-    origin: "http://localhost:5173", // or your frontend port
-    credentials: true
+    origin: "*", 
 }));
 app.use(express.json({ limit: "40kb"}));
 app.use(express.urlencoded({extended: true}));
