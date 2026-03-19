@@ -106,6 +106,7 @@ export default function VideoMeetComponent() {
             } else {
                 setScreenAvailable(false);
             }
+            
 
             if (videoAvailable || audioAvailable) {
                 const userMediaStream = await navigator.mediaDevices.getUserMedia({ video: videoAvailable, audio: audioAvailable });
